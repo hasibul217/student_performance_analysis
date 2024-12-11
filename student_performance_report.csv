@@ -1,0 +1,11 @@
+Student Name,Student ID,Subject,Score,Attendance Percentage,Assignment Completion,Aggregate Score,Grade
+Tom,STU-20301,Real,85,95,Yes,88.5,B
+Jerry,STU-20302,Real,78,82,Yes,81.0,B
+Bob,STU-20303,Real,92,88,Yes,92.0,A
+Alice,STU-20304,Real,88,74,No,76.39999999999999,B
+Max,STU-20305,Real,75,45,Yes,71.5,C
+Lily,STU-20306,Real,89,84,No,79.1,B
+Jack,STU-20307,Real,67,65,No,59.9,C
+Sam,STU-20308,Real,48,78,Yes,59.199999999999996,C
+Eva,STU-20309,Real,73,70,Yes,75.1,B
+Mia,STU-20310,Real,56,96,Yes,68.4,C

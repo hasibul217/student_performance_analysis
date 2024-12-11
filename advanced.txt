@@ -1,0 +1,85 @@
+import pandas as pd
+import re
+
+# Decorator 
+def log_execution(func):
+    def wrapper(*args, **kwargs):
+        print(f"Executing {func.__name__}...")
+        result = func(*args, **kwargs)
+        print(f"Execution of {func.__name__} completed.")
+        return result
+    return wrapper
+
+# Function to validate student ID 
+def validate_student_id(student_id):
+    pattern = r"^STU-\d{5}$"
+    if re.match(pattern, student_id):
+        return True
+    else:
+        raise ValueError("Invalid student ID format. Must follow STU-XXXXX.")
+
+# Exception handling
+@log_execution
+def read_student_data(file_name):
+    try:
+        data = pd.read_csv(file_name)
+        return data
+    except FileNotFoundError:
+        print(f"Error: The file '{file_name}' was not found.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
+@log_execution
+def process_student_data(data):
+    if data is None:
+        return None
+
+    try:
+        # Validate Student IDs
+        data['Valid Student ID'] = data['Student ID'].apply(validate_student_id)
+
+        # Example operation: Calculate average score
+        average_score = data['Score'].mean()
+        print(f"Average score of all students: {average_score}")
+        return data
+    except KeyError as e:
+        print(f"Error: Missing expected column {e}")
+        return None
+    except ZeroDivisionError:
+        print("Error: Division by zero occurred.")
+        return None
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
+# Sample data
+data = [
+    ["Tom", "STU-20301", "Real ", 85, 95, "Yes"],
+    ["Jerry", "STU-20302", "Real ", 78, 82, "Yes"],
+    ["Bob", "STU-20303", "Real ", 92, 88, "Yes"],
+    ["Alice", "STU-20304", "Real ", 88, 75, "No"],
+    ["Max", "STU-20305", "Real ", 75, 92, "Yes"],
+    ["Lily", "STU-20306", "Real ", 89, 84, "No"],
+    ["Jack", "STU-20307", "Real ", 67, 65, "No"],
+    ["Sam", "STU-20308", "Real ", 80, 78, "Yes"],
+    ["Eva", "STU-20309", "Real ", 73, 70, "Yes"],
+    ["Mia", "STU-2310", "Real", 90, 96, "Yes"]
+]
+
+columns = ["Student Name", "Student ID", "Subject", "Score", "Attendance Percentage", "Assignment Completion"]
+
+# Create DataFrame
+df = pd.DataFrame(data, columns=columns)
+
+# Save to CSV (simulating file operation)
+df.to_csv("student_data.csv", index=False)
+
+# Read and process the data
+student_data = read_student_data("student_data.csv")
+processed_data = process_student_data(student_data)
+
+if processed_data is not None:
+    processed_data.to_csv("processed_student_data.csv", index=False)
+    print("Processed data saved to 'processed_student_data.csv'.")
